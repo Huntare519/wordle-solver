@@ -1,30 +1,39 @@
 from email.headerregistry import ContentTransferEncodingHeader
+import emoji
 from english_words import english_words_lower_alpha_set
 
 
 def get_users_guess():
-    i = 0
-    guess_dictionary = {}
+    guess_list = []
     users_input = input("please enter your wordle guess:")
 
     # create dictionary with [char]:[information]
     for char in users_input:
-        guess_dictionary.update({char: 3})
+        guess_list.append([char, 3])
 
-    # for key, value in guess_dictionary.items():
-    #     print("k->", key, "v->", value)
-
-    for key, value in guess_dictionary.items():
+    for letter in guess_list:
         # show prompt each time
         print("for each letter in your guess, please enter:")
         print("(1) if the letter is in the correct spot (i.e. green box emoji)")
         print("(2) if the letter is correct but it is in the wrong spot (i.e.yellow emoji)")
         print("(3) if the letter is not correct (i.e.grey emoji)")
         # show user letter in guess
-        print(key)
+        print(letter[0])
         char_information = input("enter a number: ")
-        guess_dictionary[i] = char_information
-        i = i + 1
+        letter[1] = char_information
+    return guess_list
+
+
+def print_guess_after_user_prompt(guess_list):
+    print("--Your Wordle Guess--\n")
+    for letter in guess_list:
+        if int(letter[1]) == 1:
+            print(emoji.emojize(' 🟩 '), end='')
+        if int(letter[1]) == 2:
+            print(emoji.emojize(' 🟨 '), end='')
+        if int(letter[1]) == 3:
+            print(emoji.emojize(' ⬛️ '), end='')
+    print()
 
 
 def check_if_in(wordle):
@@ -33,7 +42,8 @@ def check_if_in(wordle):
 
 
 def main():
-    get_users_guess()
+    guess_list = get_users_guess()
+    print_guess_after_user_prompt(guess_list)
 
 
 main()
