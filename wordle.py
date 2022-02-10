@@ -68,11 +68,15 @@ def check_if_in(guess_list):
 
 
 def main():
-    guess_list = get_users_guess()
-    print_guess_after_user_prompt(guess_list)
-    next_guess_list = check_if_in(guess_list)
-    print(next_guess_list)
-    #print("e" in "frame")
+    i = 0
+    while (i < 2):
+        guess_list = get_users_guess()
+        print_guess_after_user_prompt(guess_list)
+        next_guess_list = check_if_in(guess_list)
+        # need to parse out the old guess
+        print("Your next guess should be:", next_guess_list[0])
+        print(next_guess_list)
+        i = i + 1
 
 
 main()
