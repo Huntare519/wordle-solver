@@ -1,5 +1,6 @@
 from email.headerregistry import ContentTransferEncodingHeader
 import emoji
+import fnmatch
 from english_words import english_words_lower_alpha_set
 
 
@@ -25,25 +26,46 @@ def get_users_guess():
 
 
 def print_guess_after_user_prompt(guess_list):
-    print("--Your Wordle Guess--\n")
+    print("\n--Your Wordle Guess--\n")
     for letter in guess_list:
         if int(letter[1]) == 1:
+            # end='' allows to print on the same line
             print(emoji.emojize(' 🟩 '), end='')
         if int(letter[1]) == 2:
             print(emoji.emojize(' 🟨 '), end='')
         if int(letter[1]) == 3:
             print(emoji.emojize(' ⬛️ '), end='')
-    print()
+    print()  # return new line after string is built
 
 
-def check_if_in(wordle):
-    is_in = "frame" in english_words_lower_alpha_set
-    return is_in
+def check_if_in(guess_list):
+    letters_spot_known = ""
+    letters_spot_unknown = ""
+    for letter in guess_list:
+        if int(letter[1]) == 1:
+            letters_spot_known = letters_spot_known + letter[0]
+        elif int(letter[1]) == 2:
+            letters_spot_known = letters_spot_known + "?"
+            letters_spot_unknown = letters_spot_unknown + letter[0]
+        elif int(letter[1]) == 3:
+            letters_spot_known = letters_spot_known + "?"
+
+    print(letters_spot_known)
+    print(letters_spot_unknown)
+    # first search for words with the known letters and wildcard. return that set / list
+    possible_words = []
+    for word in english_words_lower_alpha_set:
+        if (letters_spot_known in word):
+            possible_words.append(word)
+    # next search for words that contained the known order and letters that we know are in it but not in correct order
+    print(len(possible_words))
+    # next_guess_list = fnmatch.filter(possible_words, "{0}")
 
 
 def main():
     guess_list = get_users_guess()
     print_guess_after_user_prompt(guess_list)
+    check_if_in(guess_list)
 
 
 main()
