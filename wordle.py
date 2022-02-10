@@ -1,6 +1,7 @@
 from email.headerregistry import ContentTransferEncodingHeader
 import emoji
 import fnmatch
+import re
 from english_words import english_words_lower_alpha_set
 
 
@@ -21,6 +22,9 @@ def get_users_guess():
         # show user letter in guess
         print(letter[0])
         char_information = input("enter a number: ")
+        while (int(char_information) > 3 or int(char_information) < 1):
+            print("not valid. please enter 1, 2, or 3")
+            char_information = input("enter a number: ")
         letter[1] = char_information
     return guess_list
 
@@ -53,19 +57,22 @@ def check_if_in(guess_list):
     print(letters_spot_known)
     print(letters_spot_unknown)
     # first search for words with the known letters and wildcard. return that set / list
-    possible_words = []
-    for word in english_words_lower_alpha_set:
-        if (letters_spot_known in word):
-            possible_words.append(word)
+    possible_words = fnmatch.filter(
+        english_words_lower_alpha_set, letters_spot_known)
     # next search for words that contained the known order and letters that we know are in it but not in correct order
-    print(len(possible_words))
-    # next_guess_list = fnmatch.filter(possible_words, "{0}")
+    next_guess_list = []
+    for word in possible_words:
+        if (re.search(letters_spot_unknown, word)):
+            next_guess_list.append(word)
+    return next_guess_list
 
 
 def main():
     guess_list = get_users_guess()
     print_guess_after_user_prompt(guess_list)
-    check_if_in(guess_list)
+    next_guess_list = check_if_in(guess_list)
+    print(next_guess_list)
+    #print("e" in "frame")
 
 
 main()
