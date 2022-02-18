@@ -109,6 +109,18 @@ def determine_next_guess(next_guess_list, guess_history):
     return final_list, len(final_list)
 
 
+def parse_final_list(guess_list, final_list, letter_strings):
+    letters_to_parse = ""
+
+    # guess_list is my list: ['h',3], ['r',1]
+    for letter in guess_list:
+        if letter[1] == '3':
+            letters_to_parse = letters_to_parse + letter[0]
+    letter_strings.append(letters_to_parse)
+    print(letters_to_parse)
+    print(letter_strings)
+
+
 def main():
     i = 0
     guess_history = []
