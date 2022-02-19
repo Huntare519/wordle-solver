@@ -32,7 +32,7 @@ def get_users_guess():
 
 def find_guess_results(answer, guess):
     guess_list = []
-    print("checking", guess, "against the answer")
+    print("\nchecking", guess, "against the answer")
 
     # create dictionary with [char]:[information]
     for char in guess:
@@ -117,8 +117,23 @@ def parse_final_list(guess_list, final_list, letter_strings):
         if letter[1] == '3':
             letters_to_parse = letters_to_parse + letter[0]
     letter_strings.append(letters_to_parse)
-    print(letters_to_parse)
-    print(letter_strings)
+
+    for word in final_list:
+        for string in letter_strings:
+            if string in word:
+                final_list.remove(word)
+
+
+def won_wordle(current_guess_list):
+    count = 0
+    for letter in current_guess_list:
+        if letter[1] == '1':
+            count = count + 1
+
+    if count == 5:
+        return True
+    else:
+        return False
 
 
 def main():
